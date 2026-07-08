@@ -1,0 +1,6 @@
+services:
+  crypto-monitor:
+    build: cryptoMonitoring/
+    container_name: my-app
+    env_file:
+      - .env
