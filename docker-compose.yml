@@ -1,6 +1,7 @@
 services:
   crypto-monitor:
-    build: cryptoMonitoring/
+    build: .
     container_name: my-app
     env_file:
       - .env
+    command: python3 manage.py cryptoMonitor
