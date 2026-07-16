@@ -25,11 +25,11 @@ ALERT_PERCENT = float(os.getenv("ALERT_PERCENT", 1.0))
 
 class CryptoMonitor:
     def __init__(self):
-        self.session = HTTP(testnet=False)
+        self.session = HTTP(testnet=False)   # от pybit, можно менять на тестовую версию
         self.base_price = None
         self.running = False
         
-    def send_telegram_message(self, text):
+    def send_telegram_message(self, text): # Каким должен быть сообщение, напомню что надо в .env указать нужные данные
         """Отправка сообщения в Telegram"""
         url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
         payload = {"chat_id": CHAT_ID, "text": text}
@@ -40,13 +40,11 @@ class CryptoMonitor:
         except Exception as err:
             logging.error(f"Ошибка сети при отправке в Telegram: {err}")
 
-    def get_current_price(self):
-        """Получение текущей цены"""
+    def get_current_price(self): # Получение текущей цены
         response = self.session.get_tickers(category="linear", symbol=SYMBOL)
         return float(response['result']['list'][0]['lastPrice'])
 
-    def check_and_alert(self):
-        """Проверка цены и отправка алерта"""
+    def check_and_alert(self): # Проверка цены и отправка алерта
         try:
             current_price = self.get_current_price()
             percent_change = ((current_price - self.base_price) / self.base_price) * 100
@@ -70,8 +68,7 @@ class CryptoMonitor:
         except Exception as e:
             logging.error(f"Произошла ошибка при выполнении: {e}")
 
-    def start_monitoring(self):
-        """Запуск мониторинга"""
+    def start_monitoring(self): # Запуск
         try:
             self.base_price = self.get_current_price()
             logging.info(f"Начальная базовая цена {SYMBOL} зафиксирована: {self.base_price} USD")
@@ -85,8 +82,7 @@ class CryptoMonitor:
             logging.critical(f"Не удалось получить начальную цену: {e}")
             raise
 
-    def stop_monitoring(self):
-        """Остановка мониторинга"""
+    def stop_monitoring(self): # Остановка мониторинга
         self.running = False
         logging.info("Мониторинг остановлен")
 

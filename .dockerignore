@@ -1,0 +1,10 @@
+venv
+app.log
+__pycache__/
+*.pyc
+db.sqlite3
+.DS_Store
+.venv
+logs
+*log
+*pid
